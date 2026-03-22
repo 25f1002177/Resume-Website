@@ -1,36 +1,69 @@
-# Dibakar Bala - Resume Website Build Report
+# Personal Resume Website — dibakar.in
 
-This document outlines the step-by-step process of how we built this premium resume website.
+A modern, fully responsive personal resume website built with semantic HTML5 and custom CSS. Designed as part of the CSS Module Assignment.
 
-## Phase 1: Requirement Analysis & Content Extraction
-We started by analyzing the provided resume text and design inspiration images. Key focus areas were identified:
-- **Core Identity**: Bridging the excellence of IIT Madras (Data Science) and IIM Bangalore (Digital Business).
-- **Major Brags**: HPAIR 2026 Executive role, WorldQuant (Top 1%), and the Spotify Exclusive Podcast (4M+ listens).
-- **Target Aesthetic**: Modern, premium, glassmorphism-based UI with a clean color palette (Deep Blue, Radiant Pink).
+**Live Site:** [dibakar.in](https://dibakar.in)
 
-## Phase 2: Design System (CSS Strategy)
-The foundation was laid in `index.css` using a modern design system:
-- **Typography**: We chose **Outfit** from Google Fonts for its geometric yet friendly feel, perfect for a tech-meets-business persona.
-- **Color Pallet**: 
-    - `Deep Blue (#002D8B)` for authority.
-    - `Vibrant Pink (#FF4D94)` for high-impact accents.
-    - `Dark Navy (#0A1128)` for secondary premium sections.
-- **Layout**: Utilized **CSS Grid** for the complex card layouts and **Flexbox** for alignment. 
-- **Components**: Built reusable `.card` classes with `backdrop-filter` for that premium glass effect.
+---
 
-## Phase 3: HTML Structure & Content Mapping
-In `index.html`, we structured the content semantically:
-- **Hero**: A high-impact section with a custom headline and an image placeholder (`profile.png`).
-- **Strategic Impact**: A grid showcasing the three most significant achievements as per the design inspiration.
-- **Academic Foundation**: Structured cards for IIMB, IITM, and IITK to highlight the dual-institute excellence.
-- **Professional Journey**: A custom-styled vertical timeline to chronicle career growth from 2016 to 2025+.
+## Overview
 
-## Phase 4: Polish & Responsiveness
-- **Smooth Interaction**: Added `scroll-behavior: smooth` for a seamless internal navigation experience.
-- **Micro-animations**: Implemented simple yet effective hover transitions on all buttons and cards.
-- **Mobile First**: Ensured the grid systems stack correctly on smaller devices using media queries.
+This is the personal portfolio of **Dibakar Bala** — Quantitative Finance Researcher, Podcast Host, and Technology Advisor to the PMO. The site showcases professional experience, academic background, strategic impact, and awards.
 
-## Phase 5: GitHub Preparation
-- Ensured all image paths are local/relative so that the repository is ready for deployment (e.g., via GitHub Pages).
-- Added image placeholders with fallback text to ensure the site looks good even before the user uploads their own photos.
+---
 
+## CSS Features Used
+
+| Technique | Implementation |
+|---|---|
+| Google Fonts | `Outfit` (weights 300–800) via Google Fonts API |
+| CSS Custom Properties | Full design token system in `:root` |
+| Color Palette | Deep blue `#002D8B` + vibrant pink `#FF4D94` |
+| Flexbox | Navigation bar, hero layout, footer |
+| CSS Grid | Impact cards, awards, experience/education split |
+| Positioning | `sticky` header, `absolute` overlay card |
+| Glassmorphism | `backdrop-filter: blur()` + semi-transparent cards |
+| Transitions | `cubic-bezier` hover animations on all interactive elements |
+| Responsive Design | Breakpoints at 1024px, 992px, 480px |
+| Gradient Text | `background-clip: text` on hero headline |
+| Pseudo-elements | `::before` circles for vertical timeline |
+| Typography Scale | 4.5rem hero → 3rem sections → 1rem body |
+
+---
+
+## File Structure
+```
+Resume-Website/
+├── index.html       # Main HTML file
+├── index.css        # All styles
+└── media/
+    ├── myself.jpg
+    ├── podcast.jpg
+    ├── narendra-modi.jpeg
+    ├── ai alpha competition.png
+    ├── vbyld.jpg
+    ├── redbrick.jpg
+    └── internshala.jpg
+```
+
+---
+
+## Sections
+
+- **Hero** — Name, tagline, photo, social links
+- **Strategic Impact** — Podcast reach, PMO advisory, AI ranking
+- **Professional Journey** — Timeline of work experience
+- **Academic Foundation** — IIM Bangalore, IIT Madras, IIT Kharagpur
+- **Distinction & Awards** — National-level recognition
+- **CTA** — Contact / collaboration prompt
+
+---
+
+## Design Decisions
+
+- **Outfit font** — Geometric sans-serif balancing professionalism and energy
+- **Blue + Pink palette** — Finance credibility meets entrepreneurial personality
+- **Single-page layout** — Smooth scroll with sticky nav for fast access to all sections
+- **Dark navy CTA block** — High-contrast close encourages contact conversion
+
+---
