@@ -322,21 +322,6 @@
             gap: 12px;
         }
 
-        #fullscreen-btn {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        #fullscreen-btn:hover {
-            color: var(--primary);
-        }
-
         @media (max-width: 600px) {
             .container {
                 padding: 24px;
@@ -355,7 +340,6 @@
     <div class="shape shape-2"></div>
 
     <div class="container" id="quiz-container">
-        <button id="fullscreen-btn" title="Toggle Fullscreen"><i class="fas fa-expand"></i></button>
 
         <!-- Landing View -->
         <div id="landing-view" class="view active">
@@ -376,7 +360,7 @@
                             <span>50</span>
                         </div>
                     </div>
-                    <button class="btn btn-primary" id="start-btn" style="width: 100%; margin-top: 10px;">Launch Fullscreen Quiz</button>
+                    <button class="btn btn-primary" id="start-btn" style="width: 100%; margin-top: 10px;">Start Practice Quiz</button>
                     <p style="font-size: 0.8rem; margin-top: 12px; color: var(--text-muted); margin-bottom: 0;">Randomly selected from our 100+ question bank.</p>
                 </div>
             </div>
@@ -417,8 +401,7 @@
                 <div class="score-circle" id="final-score">0/0</div>
                 
                 <div style="margin-top: 40px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                    <button class="btn btn-primary" onclick="location.reload()">New Practice Session</button>
-                    <a href="index.html" class="btn btn-outline">Back to Website</a>
+                    <button class="btn btn-primary" onclick="location.reload()">Start New Practice Session</button>
                 </div>
             </div>
         </div>
@@ -461,22 +444,7 @@
         // Slider logic
         slider.oninput = function() { sliderVal.textContent = this.value; }
 
-        // Fullscreen Logic
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-        function toggleFullscreen() {
-            if (!document.fullscreenElement) {
-                document.documentElement.requestFullscreen().catch(() => {});
-                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
-            } else {
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                    fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
-                }
-            }
-        }
-
         startBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(e => {});
             prepareQuestions(parseInt(slider.value));
             views.landing.classList.remove('active');
             views.quiz.classList.add('active');
