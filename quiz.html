@@ -230,6 +230,19 @@
             margin-top: 20px;
             display: none;
             animation: slideIn 0.3s ease-out;
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+        #explanation-text {
+            overflow-x: auto;
+            max-width: 100%;
+        }
+        .katex-display {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 10px 0;
+            margin: 10px 0;
         }
         @keyframes slideIn {
             from { opacity: 0; transform: translateY(-10px); }
