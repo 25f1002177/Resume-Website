@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IIM B Term 1 CGPA Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-top: #f6fbff;
+            --bg-mid: #eef6ff;
+            --bg-bottom: #dbeeff;
+            --ink-1: #10243e;
+            --ink-2: #395b80;
+            --line: #d6e6f7;
+            --panel: rgba(255, 255, 255, 0.84);
+            --panel-strong: rgba(255, 255, 255, 0.94);
+            --accent: #0f9d8a;
+            --accent-2: #ff7a45;
+            --accent-soft: #dff9f4;
+            --danger-soft: #fff1eb;
+            --shadow: 0 16px 44px rgba(25, 73, 121, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background:
+                radial-gradient(circle at 8% 15%, rgba(15, 157, 138, 0.18), transparent 34%),
+                radial-gradient(circle at 95% 82%, rgba(255, 122, 69, 0.2), transparent 30%),
+                linear-gradient(180deg, var(--bg-top) 0%, var(--bg-mid) 55%, var(--bg-bottom) 100%);
+            min-height: 100vh;
+            padding: 22px;
+            color: var(--ink-1);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            z-index: -1;
+            border-radius: 999px;
+            filter: blur(0.5px);
+        }
+
+        body::before {
+            width: 260px;
+            height: 260px;
+            top: -60px;
+            left: -70px;
+            background: linear-gradient(160deg, rgba(15, 157, 138, 0.3), rgba(15, 157, 138, 0));
+            animation: floatBlobA 8s ease-in-out infinite;
+        }
+
+        body::after {
+            width: 280px;
+            height: 280px;
+            bottom: -80px;
+            right: -90px;
+            background: linear-gradient(140deg, rgba(255, 122, 69, 0.34), rgba(255, 122, 69, 0));
+            animation: floatBlobB 9s ease-in-out infinite;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            background: var(--panel);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-radius: 26px;
+            padding: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: var(--shadow);
+            animation: riseIn 600ms ease-out;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 8px;
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(1.65rem, 2.4vw, 2.05rem);
+            letter-spacing: -0.03em;
+            color: var(--ink-1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--ink-2);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .credit-info {
+            text-align: center;
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+        }
+
+        .subject {
+            background: var(--panel-strong);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 14px;
+            border: 1px solid var(--line);
+            transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+            animation: staggerIn 520ms ease both;
+        }
+
+        .subject:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(52, 95, 143, 0.14);
+            border-color: #bdd7f1;
+        }
+
+        .subject h3 {
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: var(--ink-1);
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .subject .credit-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            color: var(--ink-2);
+            background: #ecf4ff;
+            padding: 4px 9px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+            font-weight: 700;
+            border: 1px solid #d8e8fb;
+        }
+
+        .subject.pending {
+            border-color: #ffd2bf;
+            background: var(--danger-soft);
+        }
+
+        .subject.pending h3::after {
+            content: " (Pending)";
+            color: var(--accent-2);
+            font-size: 0.8rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            color: var(--ink-2);
+            min-width: 60px;
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #c8def5;
+            border-radius: 10px;
+            background: #fff;
+            color: var(--ink-1);
+            font-size: 1rem;
+            font-weight: 600;
+            transition: border-color 140ms ease, box-shadow 140ms ease;
+        }
+
+        input[type="number"]::placeholder {
+            color: #8dadcc;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+
+        .grade-badge {
+            padding: 8px 13px;
+            background: linear-gradient(135deg, #124f83, #0f9d8a);
+            border-radius: 999px;
+            font-size: 0.9rem;
+            color: #f7fcff;
+            text-align: center;
+            min-width: 50px;
+            font-weight: 800;
+            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+        }
+
+        .special-fail {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ink-2);
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .special-fail input[type="checkbox"] {
+            accent-color: #d4483b;
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .result {
+            background: linear-gradient(145deg, #0f9d8a 0%, #0d7e85 100%);
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 14px 26px rgba(9, 98, 109, 0.3);
+        }
+
+        .result h2 {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.88);
+            margin-bottom: 10px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .result .cgpa {
+            font-family: 'Sora', sans-serif;
+            font-size: clamp(2.2rem, 7vw, 3.2rem);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .result .percentage {
+            font-size: 1.2rem;
+            color: #d8ffef;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .result .credits-completed {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.88);
+            margin-top: 10px;
+        }
+
+        .note {
+            text-align: center;
+            color: var(--ink-2);
+            font-size: 0.8rem;
+            margin-top: 20px;
+        }
+
+        .reset-btn {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #0f9d8a, #0f7f95);
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            border-radius: 12px;
+            color: #f5fdff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 130ms ease, box-shadow 130ms ease, filter 130ms ease;
+            box-shadow: 0 10px 20px rgba(16, 122, 132, 0.26);
+        }
+
+        .reset-btn:hover {
+            filter: brightness(1.06);
+            transform: translateY(-1px);
+            box-shadow: 0 12px 24px rgba(16, 122, 132, 0.32);
+        }
+
+        .reset-btn:active {
+            transform: translateY(0);
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
+        }
+
+        .footer-madeby {
+            color: var(--ink-2);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .footer-connect {
+            color: var(--ink-1);
+            font-size: 0.85rem;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #f0f8ff, #eefdfa);
+            border: 1px solid #d3eaf8;
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .footer-connect a {
+            color: #0d7e85;
+            text-decoration: none;
+            font-weight: 800;
+            background: #e7fffb;
+            border: 1px solid #bdeee6;
+            border-radius: 999px;
+            padding: 3px 8px;
+            transition: background 130ms ease, color 130ms ease;
+        }
+
+        .footer-connect a:hover {
+            background: #0d7e85;
+            color: #ffffff;
+        }
+
+        .subject:nth-of-type(1) { animation-delay: 30ms; }
+        .subject:nth-of-type(2) { animation-delay: 70ms; }
+        .subject:nth-of-type(3) { animation-delay: 110ms; }
+        .subject:nth-of-type(4) { animation-delay: 150ms; }
+        .subject:nth-of-type(5) { animation-delay: 190ms; }
+        .subject:nth-of-type(6) { animation-delay: 230ms; }
+        .subject:nth-of-type(7) { animation-delay: 270ms; }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 14px;
+            }
+
+            .container {
+                padding: 20px 16px;
+                border-radius: 20px;
+            }
+
+            .input-group {
+                gap: 8px;
+            }
+
+            .input-group label {
+                min-width: 52px;
+                font-size: 0.8rem;
+            }
+
+            .grade-badge {
+                min-width: 44px;
+            }
+
+            .result {
+                padding: 18px;
+            }
+        }
+
+        @keyframes riseIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes staggerIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes floatBlobA {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(16px, 10px);
+            }
+        }
+
+        @keyframes floatBlobB {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(-14px, -8px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div style="margin-bottom: 20px;">
+            <a href="index.html" style="text-decoration: none; color: var(--accent); font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back to Portfolio
+            </a>
+        </div>
+        <h1>IIM B Term 1 CGPA Calculator</h1>
+        <p class="subtitle">Enter your scores (out of 100)</p>
+        <p class="credit-info">Total Credits: 13.5</p>
+        
+        <div class="subject">
+            <h3>Marketing Fundamentals</h3>
+            <span class="credit-badge">Credits: 3</span>
+            <div class="input-group">
+                <label>Score:</label>
+                <input type="number" id="marketing" placeholder="0-100" min="0" max="100" step="0.01">
+                <div class="grade-badge" id="marketing-grade">-</div>
+            </div>
+            <label class="special-fail"><input type="checkbox" id="marketing-fail"> CLA/In-center/Project fail (force F)</label>
+        </div>
+
+        <div class="subject">
+            <h3>Financial Statements and Business Performance</h3>
+            <span class="credit-badge">Credits: 3</span>
+            <div class="input-group">
+                <label>Score:</label>
+                <input type="number" id="fsbp" placeholder="0-100" min="0" max="100" step="0.01">
+                <div class="grade-badge" id="fsbp-grade">-</div>
+            </div>
+            <label class="special-fail"><input type="checkbox" id="fsbp-fail"> CLA/In-center/Project fail (force F)</label>
+        </div>
+
+        <div class="subject">
+            <h3>Exploration into Entrepreneurship</h3>
+            <span class="credit-badge">Credits: 1.5</span>
+            <div class="input-group">
+                <label>Score:</label>
+                <input type="number" id="entrep" placeholder="0-100" min="0" max="100" step="0.01">
+                <div class="grade-badge" id="entrep-grade">-</div>
+            </div>
+            <label class="special-fail"><input type="checkbox" id="entrep-fail"> CLA/In-center/Project fail (force F)</label>
+        </div>
+
+        <div class="subject">
+            <h3>Creativity Mindset for Innovation and Imagination</h3>
+            <span class="credit-badge">Credits: 1.5</span>
+            <div class="input-group">
+                <label>Score:</label>
+                <input type="number" id="cmii" placeholder="0-100" min="0" max="100" step="0.01">
+                <div class="grade-badge" id="cmii-grade">-</div>
+            </div>
+            <label class="special-fail"><input type="checkbox" id="cmii-fail"> CLA/In-center/Project fail (force F)</label>
+        </div>
+
+        <div class="subject">
+            <h3>Foundations of Business Communication I</h3>
+            <span class="credit-badge">Credits: 1.5</span>
+            <div class="input-group">
+                <label>Score:</label>
+                <input type="number" id="comm" placeholder="0-100" min="0" max="100" step="0.01">
+                <div class="grade-badge" id="comm-grade">-</div>
+            </div>
+            <label class="special-fail"><input type="checkbox" id="comm-fail"> CLA/In-center/Project fail (force F)</label>
+        </div>
+
+        <div class="subject">
+            <h3>Evolution of Business and Market</h3>
+            <span class="credit-badge">Credits: 1.5</span>
+            <div class="input-group">
+                <label>Score:</label>
+                <input type="number" id="ebm" placeholder="0-100" min="0" max="100" step="0.01">
+                <div class="grade-badge" id="ebm-grade">-</div>
+            </div>
+            <label class="special-fail"><input type="checkbox" id="ebm-fail"> CLA/In-center/Project fail (force F)</label>
+        </div>
+
+        <div class="subject">
+            <h3>Business Statistics for Entrepreneurs I</h3>
+            <span class="credit-badge">Credits: 1.5</span>
+            <div class="input-group">
+                <label>Score:</label>
+                <input type="number" id="stats" placeholder="0-100" min="0" max="100" step="0.01">
+                <div class="grade-badge" id="stats-grade">-</div>
+            </div>
+            <label class="special-fail"><input type="checkbox" id="stats-fail"> CLA/In-center/Project fail (force F)</label>
+        </div>
+
+        <div class="result">
+            <h2>Your CGPA</h2>
+            <div class="cgpa" id="cgpa">0.00</div>
+            <div class="percentage" id="percentage">0%</div>
+            <div class="credits-completed" id="credits-completed">0 / 13.5 credits</div>
+        </div>
+
+
+
+        <button class="reset-btn" onclick="resetAll()">Reset All</button>
+
+        <div class="footer">
+            <p class="footer-madeby">made with 🩷 by Dibakar Bala</p>
+            <p class="footer-connect">
+                Found this useful? for more IIM tools, updates, and free resources <br>
+                Follow on <a href="https://www.instagram.com/hellodibakar/" id="insta-link">Instagram</a> and connect on <a href="https://www.linkedin.com/in/dibakarbala/" id="linkedin-link">LinkedIn</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const subjects = {
+            'marketing': { credits: 3, name: 'Marketing' },
+            'fsbp': { credits: 3, name: 'FSBP' },
+            'entrep': { credits: 1.5, name: 'Entrepreneurship' },
+            'cmii': { credits: 1.5, name: 'CMII' },
+            'comm': { credits: 1.5, name: 'Communication' },
+            'ebm': { credits: 1.5, name: 'EBM' },
+            'stats': { credits: 1.5, name: 'Statistics' }
+        };
+
+        function getGrade(score, hasComponentFail) {
+            if (score === '' || score === null) return '-';
+            const s = parseFloat(score);
+            if (hasComponentFail) return 'F';
+            if (s >= 90) return 'O';
+            if (s >= 80) return 'A';
+            if (s >= 70) return 'B';
+            if (s >= 60) return 'C';
+            if (s >= 50) return 'D';
+            if (s >= 40) return 'E';
+            return 'F';
+        }
+
+        function getGradePoint(grade) {
+            const gradePoints = {
+                'O': 10,
+                'A': 9,
+                'B': 8,
+                'C': 7,
+                'D': 6,
+                'E': 5,
+                'F': 0
+            };
+            return gradePoints[grade] ?? 0;
+        }
+
+        function calculateCGPA() {
+            let weightedGradePointSum = 0;
+            let weightedScoreSum = 0;
+            let creditsCompleted = 0;
+            const totalCredits = 13.5;
+
+            for (const [id, data] of Object.entries(subjects)) {
+                const input = document.getElementById(id);
+                const failOverride = document.getElementById(id + '-fail');
+                const score = parseFloat(input.value);
+                
+                if (input.value !== '' && !isNaN(score)) {
+                    const grade = getGrade(score, failOverride.checked);
+                    const gradePoint = getGradePoint(grade);
+                    document.getElementById(id + '-grade').textContent = grade;
+                    weightedGradePointSum += gradePoint * data.credits;
+                    weightedScoreSum += score * data.credits;
+                    creditsCompleted += data.credits;
+                } else {
+                    document.getElementById(id + '-grade').textContent = '-';
+                }
+            }
+
+            if (creditsCompleted === 0) {
+                document.getElementById('cgpa').textContent = '0.00';
+                document.getElementById('percentage').textContent = '0%';
+                document.getElementById('credits-completed').textContent = `0 / ${totalCredits} credits`;
+                return;
+            }
+
+            const cgpa = (weightedGradePointSum / creditsCompleted).toFixed(2);
+            const weightedAvgScore = weightedScoreSum / creditsCompleted;
+            
+            document.getElementById('cgpa').textContent = cgpa;
+            document.getElementById('percentage').textContent = weightedAvgScore.toFixed(2) + '%';
+            document.getElementById('credits-completed').textContent = `${creditsCompleted} / ${totalCredits} credits`;
+        }
+
+        for (const id in subjects) {
+            document.getElementById(id).addEventListener('input', calculateCGPA);
+            document.getElementById(id + '-fail').addEventListener('change', calculateCGPA);
+        }
+
+        function resetAll() {
+            for (const id in subjects) {
+                document.getElementById(id).value = '';
+                document.getElementById(id + '-fail').checked = false;
+                document.getElementById(id + '-grade').textContent = '-';
+            }
+            calculateCGPA();
+        }
+    </script>
+</body>
+</html>
