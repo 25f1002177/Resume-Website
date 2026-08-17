@@ -4,7 +4,7 @@ window.SITE_CONFIG = {
   whatsappNumber: "91XXXXXXXXXX",
 
   // Meta Pixel ID.
-  metaPixelId: "1529144447130954",
+  metaPixelId: "349989292627801",
 
   // Optional: deployed Google Apps Script Web App URL.
   // If left blank, the site still works and sends the application through WhatsApp.
