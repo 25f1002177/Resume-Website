@@ -3,8 +3,8 @@ window.SITE_CONFIG = {
   // WhatsApp number in international format, digits only. Example: 919876543210
   whatsappNumber: "91XXXXXXXXXX",
 
-  // Meta Pixel ID. Leave the placeholder while testing locally.
-  metaPixelId: "YOUR_META_PIXEL_ID",
+  // Meta Pixel ID.
+  metaPixelId: "1529144447130954",
 
   // Optional: deployed Google Apps Script Web App URL.
   // If left blank, the site still works and sends the application through WhatsApp.
