@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>আবেদন গ্রহণ করা হয়েছে</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+  <script src="pixel.js"></script>
+</head>
+<body>
+  <main class="thankyou">
+    <div class="thankyou-card">
+      <div class="tick">✓</div>
+      <div class="section-kicker">আবেদন নথিভুক্ত</div>
+      <h1 style="font-size:44px;margin-top:10px">আর এক ধাপ।</h1>
+      <p class="lead" style="margin-left:auto;margin-right:auto">WhatsApp নতুন tab-এ খোলার কথা। সেখানে আগে থেকে লেখা message-টি <strong>Send</strong> করুন—তাহলেই আমরা আপনার store ও campaign নিয়ে conversation শুরু করতে পারব।</p>
+      <a id="waFallback" class="btn" href="#" target="_blank" rel="noopener">WhatsApp খুলুন</a>
+      <div style="margin-top:20px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+        <a class="btn secondary" href="index.html" style="font-size:14px; padding:10px 18px;">← ক্যাম্পেইন পেজে ফিরে যান</a>
+        <a class="btn secondary" href="../index.html" style="font-size:14px; padding:10px 18px;">মূল ওয়েবসাইট (Dibakar Bala)</a>
+      </div>
+      <p class="mini">এই confirmation page-এ শুধুমাত্র qualified form submission-এর পর Meta Lead event fire করার ব্যবস্থা করা হয়েছে।</p>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const submitted = sessionStorage.getItem("qualifiedLeadSubmitted") === "1";
+      const wa = sessionStorage.getItem("lastWhatsAppUrl") || "#";
+      document.getElementById("waFallback").href = wa;
+
+      if(submitted){
+        if(window.fbq) fbq("track","Lead");
+        sessionStorage.removeItem("qualifiedLeadSubmitted");
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+// ===== EDIT THESE 3 VALUES BEFORE PUBLISHING =====
+window.SITE_CONFIG = {
+  // WhatsApp number in international format, digits only. Example: 919876543210
+  whatsappNumber: "91XXXXXXXXXX",
+
+  // Meta Pixel ID. Leave the placeholder while testing locally.
+  metaPixelId: "YOUR_META_PIXEL_ID",
+
+  // Optional: deployed Google Apps Script Web App URL.
+  // If left blank, the site still works and sends the application through WhatsApp.
+  googleAppsScriptUrl: "",
+
+  // Commercial settings
+  managementFee: 27500,
+  maxManagedAdSpend: 100000,
+  maxSeasonClients: 5
+};
