@@ -1,7 +1,7 @@
 // ===== EDIT THESE 3 VALUES BEFORE PUBLISHING =====
 window.SITE_CONFIG = {
   // WhatsApp number in international format, digits only. Example: 919876543210
-  whatsappNumber: "91XXXXXXXXXX",
+  whatsappNumber: "918017940590",
 
   // Meta Pixel ID.
   metaPixelId: "349989292627801",
