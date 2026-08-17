@@ -179,7 +179,8 @@ document.addEventListener("DOMContentLoaded",()=>{
     if(payload.tracking.landing_area) q.set("area",payload.tracking.landing_area);
 
     setTimeout(()=>{
-      window.location.href = "thank-you.html" + (q.toString() ? "?" + q.toString() : "");
+      const nextPage = location.pathname.endsWith(".html") ? "thank-you.html" : "thank-you";
+      window.location.href = nextPage + (q.toString() ? "?" + q.toString() : "");
     },180);
   });
 });
